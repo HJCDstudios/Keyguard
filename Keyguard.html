@@ -12,8 +12,8 @@
         <h1>Keyguard</h1>
       </div><!-- /header -->
       <div data-role="content">
-        <p>The keyguard plugin is used to authenticate the user or to know if the user has a password setup, in addition it also includes disabling the screen capture in the app
-          making your it safe and secure. By authenticating the user means to show a password input screen that has a callback whether the user successfully
+        <p>The keyguard plugin is used to authenticate the user or to know if the user has a password setup, in addition it also includes disabling the screen capture in your app
+          making it safe and secure. By authenticating the user means to show a password input screen that has a callback whether the user successfully
           authenticated or not.<br/>There is an example app at the bottom where you can check out all the features of this plugin</p>
         <p>In order to use Keyguard, you must first load the plugin at the top of your script 
           using the <b>LoadPlugin</b> method like this:</p>
@@ -28,7 +28,7 @@ app.LoadPlugin( <span class="token string">"Keyguard"</span> );
 <span class="token keyword">function</span> OnStart()
 {
   lay = app.CreateLayout( <span class="token string">"Linear"</span>, <span class="token string">"VCenter,FillXY"</span> );
-  btn_auth = app.AddButton( lay, <span class="token string">"Authconnect"</span> );
+  btn_auth = app.AddButton( lay, <span class="token string">"Authenticate"</span> );
   btn_auth.SetOnTouch( AuthUser );
   btn_info = app.AddButton( lay, <span class="token string">"Info"</span> );
   btn_info.SetOnTouch( ShowInfo );
@@ -41,7 +41,8 @@ app.LoadPlugin( <span class="token string">"Keyguard"</span> );
 
 <span class="token keyword">function</span> AuthUser()
 {
-  <span class="token keyword">if</span> ( cplg.IsKeyguardSecure() ) {
+  <span class="token keyword">if</span> ( cplg.IsKeyguardSecure() )
+  {
     <span class="token comment">/*
       p1: title
       p2: description
