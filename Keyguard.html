@@ -1,0 +1,118 @@
+<!DOCTYPE html> 
+<html>
+  <head>
+    <title>Keyguard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+    <style type="text/css"></style>
+  </head>
+  <body> 
+    <div data-role="page" data-theme="a">
+      <div data-role="header" data-position="fixed">
+        <a href='#' class='ui-btn-left' data-icon='arrow-l' data-theme="c" onclick="history.back(); return false">Back</a> 
+        <h1>Keyguard</h1>
+      </div><!-- /header -->
+      <div data-role="content">
+        <p>The keyguard plugin is used to authenticate the user or to know if the user has a password setup, in addition it also includes disabling the screen capture in the app
+          making your it safe and secure. By authenticating the user means to show a password input screen that has a callback whether the user successfully
+          authenticated or not.<br/>There is an example app at the bottom where you can check out all the features of this plugin</p>
+        <p>In order to use Keyguard, you must first load the plugin at the top of your script 
+          using the <b>LoadPlugin</b> method like this:</p>
+        <div class="samp">&nbsp;app.LoadPlugin( "Keyguard" );</div>
+        <p>Then you can create an instance of the plugin object when you need it like this:</p>
+        <div class="samp">&nbsp;plg = app.CreateKeyguard();</div>
+        <br/>
+        <div data-role="collapsible" data-collapsed="true" data-mini="true" data-theme="a" data-content-theme="b">
+          <h3>Example app</h3>
+          <pre id="examp2" style="overflow: scroll">
+app.LoadPlugin( <span class="token string">"Keyguard"</span> );
+<span class="token keyword">function</span> OnStart()
+{
+  lay = app.CreateLayout( <span class="token string">"Linear"</span>, <span class="token string">"VCenter,FillXY"</span> );
+  btn_auth = app.AddButton( lay, <span class="token string">"Authconnect"</span> );
+  btn_auth.SetOnTouch( AuthUser );
+  btn_info = app.AddButton( lay, <span class="token string">"Info"</span> );
+  btn_info.SetOnTouch( ShowInfo );
+  chk_esc = app.AddCheckBox( lay, <span class="token string">"Enable Screen Capture"</span> );
+  chk_esc.SetChecked( <span class="token keyword">true</span> );
+  chk_esc.SetOnTouch( chk_esc_SetOnTouch );
+  app.AddLayout(lay);
+  cplg = app.CreateKeyguard();<span class="token comment">//we create the plugin</span>
+}
+
+<span class="token keyword">function</span> AuthUser()
+{
+  <span class="token keyword">if</span> ( cplg.IsKeyguardSecure() ) {
+    <span class="token comment">/*
+      p1: title
+      p2: description
+    */</span>
+    cplg.Authenticate( <span class="token string">"Authentication"</span>, <span class="token string">"authenticate to continue"</span>, <span class="token string">"OnSuccess"</span>, <span class="token string">"OnFail"</span> );
+  } <span class="token keyword">else</span> {
+    app.ShowPopup( <span class="token string">"Secure lock screen hasn't been set up.\nGo to 'Settings -> Security -> Screenlock' to set up a lock screen"</span>, <span class="token string">"Bottom,Long"</span> );
+  }
+}
+
+<span class="token keyword">function</span> ShowInfo()
+{
+  app.Alert(
+  <span class="token string">"InKeyguardRestrictedInputMode: "</span>+cplg.InKeyguardRestrictedInputMode()+
+  <span class="token string">"\nIsDeviceLocked: "</span>+cplg.IsDeviceLocked()+
+  <span class="token string">"\nIsKeyguardLocked: "</span>+cplg.IsKeyguardLocked()+
+  <span class="token string">"\nIsKeyguardSecure: "</span>+cplg.IsKeyguardSecure(), <span class="token string">"Info"</span> );
+}
+
+<span class="token keyword">function</span> OnSuccess()
+{
+  app.ShowPopup( <span class="token string">"User authenticated!"</span> );
+}
+
+<span class="token keyword">function</span> OnFail()
+{
+  app.ShowPopup( <span class="token string">"User failed to authenticate"</span> );
+}
+
+<span class="token keyword">function</span> chk_esc_SetOnTouch( b )
+{
+  cplg.EnableScreenCapture( b );
+}
+          </pre>
+          <div name="divCopy" align="right">
+            <a href="#" data-role="button" data-mini="true" data-inline="true" onclick="copy(examp2)">Copy All</a>
+            <a href="#" data-role="button" data-mini="true" data-inline="true" onclick="demo(examp2)">&nbsp;&nbsp;&nbsp;Run&nbsp;&nbsp;&nbsp;</a>
+          </div>
+        </div>
+        <h3>Methods</h3>
+        <div class="samp">
+          <a href="#pop_dsc_1" data-transition="pop" data-rel="popup" class="baseFunc">Authconnect</a>(
+          <a href="#pop_dsc_2" data-transition="pop" data-rel="popup">Title</a> ,
+          <a href="#pop_dsc_3" data-transition="pop" data-rel="popup">Description</a> )
+        </div>
+        <div class="samp">
+          <a href="#pop_dsc_4" data-transition="pop" data-rel="popup" class="baseFunc">InKeygurdRestrictedInputMode</a>() → boolean
+        </div>
+        <div class="samp">
+          <a href="#pop_dsc_5" data-transition="pop" data-rel="popup" class="baseFunc">IsDeviceLocked</a>() → boolean
+        </div>
+        <div class="samp">
+          <a href="#pop_dsc_6" data-transition="pop" data-rel="popup" class="baseFunc">IsKeyguardLocked</a>() → boolean
+        </div>
+        <div class="samp">
+          <a href="#pop_dsc_7" data-transition="pop" data-rel="popup" class="baseFunc">IsKeyguardSecure</a>() → boolean
+        </div>
+        <div class="samp">
+          <a href="#pop_dsc_8" data-transition="pop" data-rel="popup" class="baseFunc">EnableScreenCapture</a>(
+          <a href="#pop_dsc_9" data-transition="pop" data-rel="popup"> boolean </a>)
+        </div>
+        <div data-role="popup" id="pop_dsc_1" class="ui-content"><b>Shows an authconnection screen for the user</b></div>
+        <div data-role="popup" id="pop_dsc_2" class="ui-content"><b>Title for the authconnection screen</b></div>
+        <div data-role="popup" id="pop_dsc_3" class="ui-content"><b>Description for the authconnection screen</b></div>
+        <div data-role="popup" id="pop_dsc_4" class="ui-content"><b>Decrecated in API level 28 but can still be used, use <a href="#pop_dsc_5" data-transition="popup" data-rel="pop" class="baseFunc">IsKeyguardLocked</a> instead</b></div>
+        <div data-role="popup" id="pop_dsc_5" class="ui-content"><b>Shows if the device is currently locked</b></div>
+        <div data-role="popup" id="pop_dsc_6" class="ui-content"><b>Tells if the keyguard is currently locked</b></div>
+        <div data-role="popup" id="pop_dsc_7" class="ui-content"><b>Tells if the device has a lock screen setup</b></div>
+        <div data-role="popup" id="pop_dsc_8" class="ui-content"><b>if true the user cannot take a screenshot, and the screen will be black when recording</b></div>
+        <div data-role="popup" id="pop_dsc_9" class="ui-content"><b>true or false</b></div>
+      </div><!-- /content -->
+    </div><!-- /page -->
+  </body>
+</html>
